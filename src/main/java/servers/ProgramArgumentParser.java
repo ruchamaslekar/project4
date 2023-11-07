@@ -1,0 +1,28 @@
+package servers;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class ProgramArgumentParser {
+    private final Map<String, String> arguments = new HashMap<>();
+
+    public void parseArgs(String[] args) {
+        for (int i = 0; i < args.length; i += 2) {
+            if (i + 1 < args.length) {
+                arguments.put(args[i], args[i + 1]);
+            }
+        }
+    }
+
+    public String getArgument(String argName) {
+        if(argName.equals("-threads")) {
+            if (arguments.get(argName) == null) {
+                return "1";
+            }
+            else {
+                return arguments.get(argName);
+            }
+        }
+        return this.arguments.get(argName);
+    }
+}
