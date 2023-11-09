@@ -29,12 +29,12 @@ public class ThreadSafeReviewDetails extends ReviewDetails {
      * Has ReadLock
      * */
     @Override
-    public List<Review> getReviews(String hotelId) {
+    public List<Review> getReviews(String hotelId,int numOfReviews) {
         try {
             lock.readLock().lock();
-            List<Review> reviews = super.getReviews(hotelId);
+            List<Review> reviews = super.getReviews(hotelId,numOfReviews);
             if(reviews != null) {
-                return Collections.unmodifiableList(super.getReviews(hotelId));
+                return Collections.unmodifiableList(super.getReviews(hotelId,numOfReviews));
             }
             else {
                 return Collections.emptyList();
