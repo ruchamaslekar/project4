@@ -19,7 +19,9 @@ public class HotelDetails {
         hotelMap.put(hotelId, hotel);
     }
 
-    /** This method is printing Hotel data based on hotelID
+    /**
+     * This method is printing Hotel data based on hotelID
+     *
      * @param hotelID hotelID
      */
     public Hotel getHotel(String hotelID) {
