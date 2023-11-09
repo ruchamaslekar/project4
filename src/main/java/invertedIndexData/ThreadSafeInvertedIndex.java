@@ -30,10 +30,10 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
      * Has ReadLock
      */
     @Override
-    public Set<ReviewFrequency> searchByWord(String word) {
+    public Set<ReviewFrequency> searchByWord(String word,int numOfThreads) {
         try {
             lock.readLock().lock();
-            return super.searchByWord(word);
+            return super.searchByWord(word,numOfThreads);
         } finally {
             lock.readLock().unlock();
         }
