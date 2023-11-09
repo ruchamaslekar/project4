@@ -1,5 +1,9 @@
 package hotelData;
 
+import com.google.gson.JsonObject;
+
+import java.util.Collections;
+import java.util.Set;
 import java.util.concurrent.locks.*;
 
 /**This class is extending HotelDetails class and implementing locks */
@@ -9,9 +13,10 @@ public class ThreadSafeHotelDetails extends HotelDetails {
         lock = new ReentrantReadWriteLock();
 
     }
-    /** Overridden method from HotelDetails class
+    /**
+     * Overridden method from HotelDetails class
      * Has ReadLock
-     * */
+     */
     @Override
     public Hotel getHotel(String hotelID) {
         try{
@@ -34,5 +39,11 @@ public class ThreadSafeHotelDetails extends HotelDetails {
         finally {
             lock.writeLock().unlock();
         }
+    }
+
+    /** This method is returning HotelIds of all hotels
+     */
+    public Set<String> getIdForHotel() {
+        return super.getIdForHotel();
     }
 }
