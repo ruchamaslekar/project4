@@ -1,4 +1,6 @@
 package hotelData;
+
+
 /** Demonstrating Hotel class */
 public class Hotel {
     private final String hotelName;
@@ -27,12 +29,40 @@ public class Hotel {
 
     }
 
+    public String getHotelName() {
+        return hotelName;
+    }
+
+    public String getHotelId() {
+        return hotelId;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
     /** toString
      * @return string representation of this hotel
      */
     @Override
     public String toString() {
-        return   this.hotelName +": "+
+        return  this.hotelName +": "+
                 this.hotelId + System.lineSeparator()+
                 this.address + System.lineSeparator()+
                 this.city +", "+this.state;
