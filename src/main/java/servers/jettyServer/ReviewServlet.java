@@ -1,12 +1,11 @@
 package servers.jettyServer;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import hotelData.Hotel;
-import hotelData.HotelDetails;
 import org.apache.commons.text.StringEscapeUtils;
 import reviewData.Review;
 import reviewData.ReviewDetails;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,18 +22,36 @@ public class ReviewServlet extends HttpServlet {
         response.setStatus(HttpServletResponse.SC_OK);
         PrintWriter out = response.getWriter();
         String hotelId = request.getParameter("hotelId");
+        int numOfReviews = (Integer.parseInt(request.getParameter("num"))) ;
         hotelId = StringEscapeUtils.escapeHtml4(hotelId);
-        if (hotelId == null || hotelId.isEmpty()) {
-            out.println("incorrect input");
-        }
-        ReviewDetails ht= (ReviewDetails) getServletContext().getAttribute("review");
-        JsonObject Jobject = new JsonObject();
-        Jobject.addProperty("hotelId",hotelId);
-        List<Review> review= ht.getReviews(hotelId);
-            for (Review r : review) {
-                out.println(review.toString());
+        JsonArray array = new JsonArray();
+        JsonObject responseJson = new JsonObject();
+        JsonObject responseJson1 = new JsonObject();
+        if(hotelId != null && !hotelId.isEmpty()) {
+            ReviewDetails reviewDetails = (ReviewDetails) getServletContext().getAttribute("review");
+            List<Review> reviews = reviewDetails.getReviews(hotelId,numOfReviews);
+            if(reviews == null ){
+                responseJson.addProperty("success",false);
+                responseJson.addProperty("hotelId","invalid");
             }
+            else{
+                responseJson.addProperty("success","true");
+                responseJson.addProperty("hotelId",hotelId);
+                for(Review review: reviews){
+                    responseJson1.addProperty("reviewId",review.getReviewId());
+                    responseJson1.addProperty("reviewText",review.getReviewText());
+                    responseJson1.addProperty("rating",review.getRatingOverall());
+                    array.add(responseJson1);
+                    responseJson.add("reviews", array);
+                }
 
+            }
+        } else{
+            responseJson.addProperty("success:",false);
+            responseJson.addProperty("hotelId:","invalid");
         }
+        out.println(responseJson);
+        out.flush();
+    }
 
 }
