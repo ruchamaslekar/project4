@@ -28,10 +28,14 @@ public class ReviewDetails {
     /** This method is printing Review data based on hotelID
      * @param hotelId hotelId
      * */
-    public List<Review> getReviews(String hotelId) {
+    public List<Review> getReviews(String hotelId,int numOfReviews) {
         List<Review> reviews = reviewMap.get(hotelId);
-        if(reviews != null) {
-            return Collections.unmodifiableList(reviewMap.get(hotelId));
+        if (reviews != null) {
+            if (numOfReviews >= 0 && numOfReviews <= reviews.size()) {
+                return Collections.unmodifiableList(reviews.subList(0, numOfReviews));
+            } else {
+                return Collections.unmodifiableList(reviews);
+            }
         }
         else {
             return Collections.emptyList();
