@@ -59,12 +59,17 @@ public class InvertedIndex {
     /** This method is searching to get details from invertedIndex
      * @param word word
      * */
-    public Set<ReviewFrequency> searchByWord (String word) {
+    public Set<ReviewFrequency> searchByWord (String word,int numOfReviews) {
         Set<ReviewFrequency> matchingReviews = invertedIndex.get(word);
-        if(matchingReviews != null) {
-            return Collections.unmodifiableSet(new TreeSet<>(matchingReviews));
-        }
-        else {
+        if (matchingReviews != null) {
+            List<ReviewFrequency> reviewList = new ArrayList<>(matchingReviews);
+
+            if (numOfReviews >= 0 && numOfReviews <= reviewList.size()) {
+                return new TreeSet<>(reviewList.subList(0, numOfReviews));
+            } else {
+                return new TreeSet<>(reviewList);
+            }
+        } else {
             return null;
         }
     }
