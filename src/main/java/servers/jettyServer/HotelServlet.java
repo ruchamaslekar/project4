@@ -20,13 +20,32 @@ public class HotelServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         String hotelId = request.getParameter("hotelId");
         hotelId = StringEscapeUtils.escapeHtml4(hotelId);
-        if (hotelId == null || hotelId.isEmpty()) {
-            out.println("incorrect input");
+        JsonObject responseJson = new JsonObject();
+        if (hotelId != null && !hotelId.isEmpty()) {
+            HotelDetails hotelDetails = (HotelDetails) getServletContext().getAttribute("hotel");
+            Hotel hotel  = hotelDetails.getHotel(hotelId);
+            if(hotel == null ){
+                responseJson.addProperty("success",false);
+                responseJson.addProperty("hotelId","invalid");
+                out.println(responseJson);
+            }
+            else {
+                responseJson.addProperty("success","true");
+                responseJson.addProperty("hotelId",hotelId);
+                responseJson.addProperty("name",hotel.getHotelName());
+                responseJson.addProperty("addr",hotel.getAddress());
+                responseJson.addProperty("city",hotel.getCity());
+                responseJson.addProperty("lat",hotel.getLatitude());
+                responseJson.addProperty("lng",hotel.getLongitude());
+                out.println(responseJson.toString());
+            }
+            out.flush();
+        } else {
+            responseJson.addProperty("success",false);
+            responseJson.addProperty("hotelId","invalid");
+            out.println(responseJson);
+            out.flush();
         }
-        HotelDetails ht = (HotelDetails) getServletContext().getAttribute("hotel");
-        JsonObject jObject = new JsonObject();
-        jObject.addProperty("hotelId",hotelId);
-        Hotel hotel= ht.getHotel(hotelId);
-        out.println(hotel.toString());
+
     }
 }
