@@ -1,20 +1,16 @@
 package servers.jettyServer;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import invertedIndexData.InvertedIndex;
-import invertedIndexData.InvertedIndexParser;
 import invertedIndexData.ReviewFrequency;
 import org.apache.commons.text.StringEscapeUtils;
-import reviewData.Review;
-import reviewData.ReviewDetails;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import java.util.Set;
 
 public class InvertedIndexServlet extends HttpServlet {
@@ -25,17 +21,38 @@ public class InvertedIndexServlet extends HttpServlet {
         response.setStatus(HttpServletResponse.SC_OK);
         PrintWriter out = response.getWriter();
         String word = request.getParameter("word");
+        int numOfReviews = (Integer.parseInt(request.getParameter("num"))) ;
         word = StringEscapeUtils.escapeHtml4(word);
-        if (word == null || word.isEmpty()) {
-            out.println("incorrect input");
+        JsonArray array = new JsonArray();
+        JsonObject responseJson = new JsonObject();
+        JsonObject responseJson1 = new JsonObject();
+        if(word != null && !word.isEmpty()) {
+            InvertedIndex invertedIndex = (InvertedIndex) getServletContext().getAttribute("word");
+            Set<ReviewFrequency> reviews = invertedIndex.searchByWord(word,numOfReviews);
+            if(reviews == null){
+                responseJson.addProperty("success",false);
+                responseJson.addProperty("word","invalid");
+                out.println(responseJson);
+            }
+            else {
+                responseJson.addProperty("success",true);
+                responseJson.addProperty("word",word);
+                for (ReviewFrequency review : reviews) {
+                    responseJson1.addProperty("reviewId",review.getReview().getReviewId());
+                    responseJson1.addProperty("title",review.getReview().getTitle());
+                    responseJson1.addProperty("user",review.getReview().getUserNickname());
+                    responseJson1.addProperty("reviewText",review.getReview().getReviewText());
+                    responseJson1.addProperty("date",review.getReview().getDate().toString());
+                    array.add(responseJson1);
+                    responseJson.add("reviews", array);
+                }
+            }
+        } else {
+            responseJson.addProperty("success",false);
+            responseJson.addProperty("hotelId","invalid");
         }
-        InvertedIndex ht= (InvertedIndex) getServletContext().getAttribute("word");
-        JsonObject Jobject = new JsonObject();
-        Jobject.addProperty("word",word);
-        Set<ReviewFrequency> review= ht.searchByWord(word);
-        for (ReviewFrequency r : review) {
-            out.println(review.toString());
-        }
+        out.println(responseJson);
+        out.flush();
 
     }
 }
