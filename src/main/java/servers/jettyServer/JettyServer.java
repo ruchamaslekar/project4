@@ -44,42 +44,5 @@ public class JettyServer {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-//        Server server = new Server(PORT);
-//        ServletContextHandler handlers= new ServletContextHandler();
-//        handlers.addServlet(HotelServlet.class, "/hotelInfo");
-//        handlers.addServlet(ReviewServlet.class, "/reviewInfo");
-//        handlers.addServlet(InvertedIndexServlet.class, "/wordInfo");
-//        handlers.setAttribute("hotel",resources.get("hotel"));
-//        handlers.setAttribute("review",reviewDetails);
-//        handlers.setAttribute("word",invertedIndex);
-//        server.setHandler(handlers);
-//        server.start();
-//        server.join();
-//        addMapping("/hotelInfo", "HotelServlet");
-//        addMapping("/reviewInfo", "ReviewServlet");
-//        addMapping("/wordInfo", "InvertedIndexServlet");
-
-
-        /**Hotel data*/
-//        HotelParser parser = new HotelParser();
-//        HotelDetails hotelDetails = new HotelDetails();
-//        handlers.addServlet(HotelServlet.class, "/hotelInfo");
-//        parser.parseHotelJson("/Users/ruchamaslekar/Software Development/project4-ruchamaslekar/input/hotels/hotels.json",hotelDetails);
-//        server.setHandler(handlers);
-//        handlers.setAttribute("hotel",hotelDetails);
-
-        /**Review data*/
-//        ExecutorService poolManager = Executors.newFixedThreadPool(3);
-//        MultithreadedDirectoryParser parser1 = new MultithreadedDirectoryParser();
-//        HotelParser parser = new HotelParser();
-//        HotelDetails hotelDetails = new ThreadSafeHotelDetails();
-//        parser.parseHotelJson("/Users/ruchamaslekar/Software Development/project4-ruchamaslekar/input/hotels/hotels.json",hotelDetails);
-//        ReviewDetails reviewDetails = new ThreadSafeReviewDetails();
-//        handlers.addServlet(ReviewServlet.class, "/reviewInfo");
-//        parser1.recursivelyParseDirectory("/Users/ruchamaslekar/Software Development/project4-ruchamaslekar/input/reviews",reviewDetails,poolManager);
-//        server.setHandler(handlers);
-//        handlers.setAttribute("review",reviewDetails);
-
     }
 }
