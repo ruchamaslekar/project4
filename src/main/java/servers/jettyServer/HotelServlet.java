@@ -24,12 +24,10 @@ public class HotelServlet extends HttpServlet {
             if(hotelId == null){
                 responseJson.addProperty("hotelId", "invalid");
                 responseJson.addProperty("success", false);
-                response.getWriter().println(responseJson);
-                out.flush();
             }
             else {
                 Hotel hotel  = hotelDetails.getHotel(hotelId);
-                if (hotel != null) {
+                if(hotel != null) {
                     responseJson.addProperty("hotelId", hotelId);
                     responseJson.addProperty("name", hotel.getHotelName());
                     responseJson.addProperty("addr", hotel.getAddress());
@@ -38,17 +36,15 @@ public class HotelServlet extends HttpServlet {
                     responseJson.addProperty("lat", hotel.getLatitude());
                     responseJson.addProperty("lng", hotel.getLongitude());
                     responseJson.addProperty("success", true);
-                    response.getWriter().println(responseJson);
-                    out.flush();
                 } else {
                     responseJson.addProperty("hotelId", "invalid");
                     responseJson.addProperty("success", false);
-                    response.getWriter().println(responseJson);
-                    out.flush();
                 }
             }
+            response.getWriter().println(responseJson);
+            out.flush();
         } catch(Exception e) {
-            System.out.println(e);
+            System.out.println("Error"+e);
         }
     }
 }
