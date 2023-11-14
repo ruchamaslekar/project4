@@ -9,15 +9,7 @@ import invertedIndexData.ThreadSafeInvertedIndex;
 import reviewData.MultithreadedDirectoryParser;
 import reviewData.ReviewDetails;
 import reviewData.ThreadSafeReviewDetails;
-import servers.jettyServer.HotelServlet;
-import servers.jettyServer.InvertedIndexServlet;
-import servers.jettyServer.JettyServer;
-import servers.jettyServer.ReviewServlet;
-
-import javax.servlet.http.HttpServlet;
-import java.util.ArrayList;
-import java.util.List;
-
+import servers.jettyServer.*;
 
 /** Driver class for running the Jetty server.
  * Create a jar file from this class.  */
@@ -49,13 +41,15 @@ public class JettyServerDriver {
         InvertedIndexParser indexParser = new InvertedIndexParser();
         indexParser.ParseDirectory(programParser.getArgument("-reviews"),invertedIndex,reviewDetails);
 
+
         /** JettyServer */
         JettyServer server = new JettyServer();
 
         /** Setting resources map */
         server.addMapping("/hotelInfo", HotelServlet.class);
-        server.addMapping("/reviewInfo", ReviewServlet.class);
-        server.addMapping("/wordInfo", InvertedIndexServlet.class);
+        server.addMapping("/reviews", ReviewServlet.class);
+        server.addMapping("/index", InvertedIndexServlet.class);
+        server.addMapping("/weatherInfo", WeatherServlet.class);
 
         /** Setting resources attributes */
         server.setResourceAttribute("hotel", hotelDetails);
