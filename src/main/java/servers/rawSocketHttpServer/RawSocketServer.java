@@ -1,10 +1,7 @@
 package servers.rawSocketHttpServer;
 
-import servers.rawSocketHttpServer.handlers.ReviewHandler;
-import servers.rawSocketHttpServer.handlers.WordHandler;
-import servers.rawSocketHttpServer.handlers.HotelHandler;
-
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -19,12 +16,13 @@ import java.util.concurrent.Executors;
  * */
 public class RawSocketServer {
     private static final int PORT = 8080;
-    private static Map<String, String> handlers = new HashMap<>(); // maps each endpoint/url path to the appropriate handler
+    private static final Map<String, String> handlers = new HashMap<>(); // maps each endpoint/url path to the appropriate handler
     // Think of handlers as "servlets" - helpers of the server;
     private static boolean isShutdown = false;
     private final ExecutorService threads;
     private static Object data;
-
+    private static final Logger logger = LogManager.getLogger();
+    private static final Map<String, Object> resources = new HashMap<>();
     public RawSocketServer(int numOfThreads) {
         threads = Executors.newFixedThreadPool(numOfThreads);
     }
@@ -40,8 +38,11 @@ public class RawSocketServer {
     public void addMapping(String path, String className) {
         handlers.put(path, className);
     }
-    public void addResources(Object data) {
-        this.data = data;
+//    public void addResources(Object data) {
+//        this.data = data;
+//    }
+    public void setResourceAttribute(String resourceName, Object resource) {
+        resources.put(resourceName, resource);
     }
 
     // FILL IN CODE: add additional methods as needed
@@ -49,29 +50,16 @@ public class RawSocketServer {
     public void start() {
         // start the server
         // FILL IN CODE
-        //create welcoming socket
-        //listen to request
-        //if request found, create connectionSocket
-        //refer gameServer lab assignment
-        System.out.println("HTTP server started");
-
-        Runnable serverTask = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    ServerSocket welcomingSocket = new ServerSocket(PORT);
-                    while (true) {
-                        Socket connectionSocket = welcomingSocket.accept();
-                        RequestWorker requestWorker = new RequestWorker(connectionSocket);
-                        threads.submit(requestWorker);
-                    }
-                } catch (Exception ex) {
-
-                }
+        System.out.println("RawSocketServer started");
+        try(ServerSocket welcomingSocket = new ServerSocket(PORT)){
+            while(!isShutdown) {
+                Socket connectionSocket = welcomingSocket.accept();
+                RequestWorker requestWorker = new RequestWorker(connectionSocket);
+                threads.submit(requestWorker);
             }
-        };
-        Thread serverThread = new Thread(serverTask);
-        serverThread.start();
+        } catch (Exception ex) {
+            logger.debug("Error"+ex);
+        }
     }
     public static class RequestWorker implements Runnable {
         final Socket clientConnectionSocket;
@@ -83,7 +71,6 @@ public class RawSocketServer {
          */
         public RequestWorker(Socket clientSocket) {
             clientConnectionSocket = clientSocket;
-            System.out.println("Client connected");
         }
 
         /**
@@ -91,42 +78,37 @@ public class RawSocketServer {
          */
         @Override
         public void run() {
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(clientConnectionSocket.getInputStream())); PrintWriter writer = new PrintWriter(clientConnectionSocket.getOutputStream(), true)) {
+            System.out.println("Client Connected");
+            try(BufferedReader reader = new BufferedReader(new InputStreamReader(clientConnectionSocket.getInputStream()));
+                PrintWriter writer = new PrintWriter(clientConnectionSocket.getOutputStream(), true)) {
                 StringBuilder requestBuilder = new StringBuilder();
                 String line;
-//                while (!(line = reader.readLine()).isEmpty()) {
-//                    requestBuilder.append(line).append("\r\n");
-//                }
+                if(!(line = reader.readLine()).isEmpty()) {
+                    requestBuilder.append(line).append(System.lineSeparator());
+                }
                 String httpRequest = requestBuilder.toString();
-                HttpRequest parsedRequest = new HttpRequest(httpRequest);
-                String path = parsedRequest.getPath();
-                String className= handlers.get(path);
-                HttpHandler httpHandler = null;
-                try {
-                    httpHandler = (HttpHandler) Class.forName(className).
-                            newInstance();
-                } catch (InstantiationException e) {
-                    throw new RuntimeException(e);
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                } catch (ClassNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
-//              HttpHandler httpHandler = new HotelHandler();
-//              HttpHandler httpHandler = new ReviewHandler();
-//              HttpHandler httpHandler = new WordHandler();
                 HttpResponse response = new HttpResponse(writer);
-                httpHandler.setAttribute(data);
-                httpHandler.processRequest(parsedRequest,response);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    clientConnectionSocket.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if(httpRequest.startsWith("POST")){
+                    response.sendMethodNotFoundResponse();
                 }
+                HttpRequest parsedRequest = new HttpRequest(httpRequest);
+                String className = handlers.get(parsedRequest.getPath());
+                if(className != null && !className.isEmpty()) {
+                    StringBuilder packagePath = new StringBuilder("servers.rawSocketHttpServer.handlers.");
+                    StringBuilder path = packagePath.append(className);
+                    try{
+                        HttpHandler httpHandler = (HttpHandler) Class.forName(path.toString()).newInstance();
+                        httpHandler.setAttribute(resources.get(className));
+                        httpHandler.processRequest(parsedRequest, response);
+                    }finally {
+                        clientConnectionSocket.close();
+                    }
+                }else {
+                    response.sendPageNotFoundResponse();
+                }
+            }catch(IOException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+                logger.debug("Error"+e);
+//                throw new RuntimeException(e);
             }
         }
     }
