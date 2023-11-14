@@ -50,10 +50,12 @@ public class RawSocketServerDriver {
         indexParser.ParseDirectory(programParser.getArgument("-reviews"),invertedIndex,reviewDetails);
 
         RawSocketServer rawSocketServer = new RawSocketServer((Integer.parseInt(programParser.getArgument("-threads"))));
-        rawSocketServer.addMapping("hotels", "HotelHandler.class");
-//      rawSocketServer.addMapping("/reviews", "ReviewHandler.class");
-//      rawSocketServer.addMapping("/words", "WordHandler.class");
-        rawSocketServer.addResources(hotelDetails);
+        rawSocketServer.addMapping("hotelInfo", "HotelHandler");
+        rawSocketServer.addMapping("reviews", "ReviewHandler");
+        rawSocketServer.addMapping("index", "WordHandler");
+        rawSocketServer.setResourceAttribute("HotelHandler",hotelDetails);
+        rawSocketServer.setResourceAttribute("ReviewHandler",reviewDetails);
+        rawSocketServer.setResourceAttribute("WordHandler",invertedIndex);
         rawSocketServer.start();
 
     }
