@@ -38,33 +38,26 @@ public class HttpResponse {
         this.content = new StringBuilder();
     }
 
-    public void setStatusCode(int statusCode, String statusMessage) {
-        this.statusCode = statusCode;
-        this.statusMessage = statusMessage;
-    }
-
-    public void setContentType(String contentType) {
-        this.contentType = contentType;
-    }
-
-    public void sendResponse(Hotel hotelInfoResponse) {
+    public void sendResponse(String response) {
         writer.println("HTTP/1.1 " + statusCode + " " + statusMessage);
         writer.println();
-        writer.println(content.append(hotelInfoResponse.toString()));
+        writer.println(content.append(response));
         writer.flush();
     }
-
-    public void sendReviewResponse(List<Review> reviewsResponse) {
-        writer.println("HTTP/1.1 " + statusCode + " " + statusMessage);
+    public void sendPageNotFoundResponse(String response){
+        writer.println("HTTP/1.1 " + 404 + " " + "Not Found");
         writer.println();
-        writer.println(content.append(reviewsResponse.toString()));
+        writer.println(content.append(response));
         writer.flush();
     }
-
-    public void sendInvertedIndexResponse(Set<ReviewFrequency> invertedIndexResponse) {
-        writer.println("HTTP/1.1 " + statusCode + " " + statusMessage);
+    public void sendPageNotFoundResponse(){
+        writer.println("HTTP/1.1 " + 404 + " " + "Not Found");
         writer.println();
-        writer.println(content.append(invertedIndexResponse.toString()));
+        writer.flush();
+    }
+    public void sendMethodNotFoundResponse(){
+        writer.println("HTTP/1.1 " + 405 + " " + "Not Found");
+        writer.println();
         writer.flush();
     }
 }
