@@ -12,36 +12,41 @@ public class ThreadSafeReviewDetails extends ReviewDetails {
         this.lock = new ReentrantReadWriteLock();
     }
 
-    /** Overridden method from ReviewDetails class
+    /**
+     * Overridden method from ReviewDetails class
      * Has WriteLock
-     * */
+     */
     @Override
-    public void addReviews(String hotelId, List<Review> review){
+    public void addReviews(String hotelId, List<Review> review) {
         try {
             lock.writeLock().lock();
-            super.addReviews(hotelId,review);
-        }
-        finally {
+            super.addReviews(hotelId, review);
+        } finally {
             lock.writeLock().unlock();
         }
     }
-    /** Overridden method from ReviewDetails class
+
+    /**
+     * Overridden method from ReviewDetails class
      * Has ReadLock
-     * */
+     */
     @Override
-    public List<Review> getReviews(String hotelId,int numOfReviews) {
+    public List<Review> getReviews(String hotelId, int numOfReviews) {
         try {
             lock.readLock().lock();
-            List<Review> reviews = super.getReviews(hotelId,numOfReviews);
-            if(reviews != null) {
-                return Collections.unmodifiableList(super.getReviews(hotelId,numOfReviews));
-            }
-            else {
-                return Collections.emptyList();
-            }
-        }
-        finally {
+            return super.getReviews(hotelId, numOfReviews);
+//            List<Review> reviews = super.getReviews(hotelId,numOfReviews);
+//            if(reviews != null) {
+//                return Collections.unmodifiableList(super.getReviews(hotelId,numOfReviews));
+//            }
+//            else {
+//                return Collections.emptyList();
+//            }
+        } finally {
             lock.readLock().unlock();
         }
+
     }
+
 }
+
