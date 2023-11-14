@@ -56,8 +56,6 @@ public class InvertedIndexParser {
                 }
                 String date = jsonObject.get("reviewSubmissionTime").getAsString();
                 Review review = new Review(hotelId, reviewId, ratingOverall, title, reviewText, userNickname, date);
-                reviewList.add(review);
-                reviewDetails.addReviews(hotelId,reviewList);
                 invertedIndex.addReviews(review);
             }
         } catch (IOException e) {
