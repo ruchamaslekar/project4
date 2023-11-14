@@ -1,6 +1,5 @@
 package servers.rawSocketHttpServer;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.text.StringEscapeUtils;
@@ -46,7 +45,6 @@ public class HttpRequest {
             method = requestComponents[0];
             parsePath(requestComponents[1]);
             parseProtocol(requestComponents[2]);
-
         } catch (Exception ex) {
             System.err.println("Error parsing request: " + ex.getMessage());
             ex.printStackTrace();
