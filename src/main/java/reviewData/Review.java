@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 /** Demonstrating Review class */
-public class Review {
+public class Review{
     private final String hotelId;
     private final String reviewId;
     private final int ratingOverall;
