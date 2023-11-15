@@ -3,15 +3,14 @@ package weatherData;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
 import java.io.*;
 import java.net.Socket;
 
 public class WeatherFetcher {
-    public static int PORT = 80;
+    private static final int PORT = 80;
     public static JsonObject fetch(String host, String pathAndResource) {
         StringBuilder buf = new StringBuilder();
-        StringBuffer sb = new StringBuffer();
+        StringBuffer stringBuffer = new StringBuffer();
         JsonObject weatherDetails = null;
         try (Socket socket = new Socket(host, PORT)) {
             OutputStream out = socket.getOutputStream();
@@ -27,23 +26,23 @@ public class WeatherFetcher {
             }
             while((line = reader.readLine()) != null) {
                 if (line.startsWith("{")) {
-                    sb.append(line);
+                    stringBuffer.append(line);
                 }
             }
             Gson gson = new Gson();
             JsonParser parser = new JsonParser();
-            JsonObject jo = (JsonObject) parser.parse(String.valueOf(sb));
+            JsonObject jo = (JsonObject) parser.parse(String.valueOf(stringBuffer));
             weatherDetails = jo.getAsJsonObject("current_weather");
         } catch (IOException e) {
-            System.out.println("HTTPFetcher::IOException occurred during download: " + e.getMessage());
+            System.out.println("WeatherFetcher::IOException occurred during download: " + e.getMessage());
         }
         return weatherDetails;
     }
 
     /**
-     * A method that creates a GET request for the given host and resource
-     * @param host
-     * @param pathResourceQuery
+     * Method to create a GET request for the given host and resource
+     * @param host String
+     * @param pathResourceQuery String
      * @return HTTP GET request returned as a string
      */
     private static String getRequest(String host, String pathResourceQuery) {
@@ -52,7 +51,6 @@ public class WeatherFetcher {
                 + "Connection: close" + System.lineSeparator()
                 + System.lineSeparator();
     }
-
 }
 
 

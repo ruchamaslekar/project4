@@ -12,6 +12,10 @@ public interface HttpHandler {
      */
     void processRequest(HttpRequest request, HttpResponse response);
 
+    /**
+     * Sets attribute
+     * @param data Object
+     */
     void setAttribute(Object data);
 
     // Add additional methods as needed - this interface must be general - do NOT include anything related to hotels/reviews here
