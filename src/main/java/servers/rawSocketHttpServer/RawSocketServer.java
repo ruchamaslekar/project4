@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-
 /** Implements the http server (that processes GET requests) using raw sockets.
  * RawSocketServer should be general and not contain anything related to hotels/reviews.
  * */
@@ -38,9 +37,6 @@ public class RawSocketServer {
     public void addMapping(String path, String className) {
         handlers.put(path, className);
     }
-//    public void addResources(Object data) {
-//        this.data = data;
-//    }
     public void setResourceAttribute(String resourceName, Object resource) {
         resources.put(resourceName, resource);
     }
@@ -62,7 +58,7 @@ public class RawSocketServer {
         }
     }
     public static class RequestWorker implements Runnable {
-        final Socket clientConnectionSocket;
+        private final Socket clientConnectionSocket;
 
         /**
          * Initialize client socket
