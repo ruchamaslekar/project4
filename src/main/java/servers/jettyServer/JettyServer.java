@@ -19,14 +19,18 @@ public class JettyServer {
     }
     /**
      * Maps a given URL path/endpoint to the name of the servlet class that will handle requests coming at this endpoint
-     * @param path end point
-     * @param className  name of the servlet class
+     * @param path String
+     * @param className Class
      */
     public void addMapping(String path, Class className) {
         // FILL IN CODE: call the method on the handler that adds the mapping between the path and the servlet
          handlers.addServlet(className, path);
     }
-
+    /**
+     * Maps a given resourceName to the object of map
+     * @param resourceName String
+     * @param resource Object
+     */
     // FILL IN CODE: add other methods as needed
     public void setResourceAttribute(String resourceName, Object resource) {
         handlers.setAttribute(resourceName, resource);

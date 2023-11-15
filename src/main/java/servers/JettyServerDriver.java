@@ -24,20 +24,21 @@ public class JettyServerDriver {
         // Create the JettyServer, call addMapping for the endpoints to map them to servlets,
         // pass ThreadSafeHotelData etc as the resource,
         // then start the server
+        /** Loading data for ProgramArgumentParser */
         ProgramArgumentParser programParser = new ProgramArgumentParser();
         programParser.parseArgs(args);
 
-        /**HotelParsing*/
+        /** Loading data for Hotel */
         HotelParser parser = new HotelParser();
         HotelDetails hotelDetails = new ThreadSafeHotelDetails();
         parser.parseHotelJson(programParser.getArgument("-hotels"),hotelDetails);
 
-        /**ReviewParsing*/
+        /** Loading data for Reviews */
         MultithreadedDirectoryParser directoryParser = new MultithreadedDirectoryParser();
         ReviewDetails reviewDetails = new ThreadSafeReviewDetails();
         directoryParser.parseDirectory(programParser, reviewDetails, hotelDetails);
 
-        /**InvertedIndexParsing*/
+        /** Loading data for InvertedIndex */
         InvertedIndex invertedIndex = new ThreadSafeInvertedIndex();
         InvertedIndexParser indexParser = new InvertedIndexParser();
         indexParser.ParseDirectory(programParser.getArgument("-reviews"),invertedIndex,reviewDetails);
@@ -45,7 +46,7 @@ public class JettyServerDriver {
         /** JettyServer */
         JettyServer server = new JettyServer();
 
-        /** Setting resources map */
+        /** Setting ServletHandlers */
         server.addMapping("/hotelInfo", HotelServlet.class);
         server.addMapping("/reviews", ReviewServlet.class);
         server.addMapping("/index", InvertedIndexServlet.class);
@@ -57,7 +58,7 @@ public class JettyServerDriver {
         server.setResourceAttribute("word", invertedIndex);
         server.setResourceAttribute("weather",hotelDetails);
 
+        /** Starting the server */
         server.start();
-
     }
 }

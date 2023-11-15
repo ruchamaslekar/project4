@@ -19,9 +19,10 @@ public class RawSocketServer {
     // Think of handlers as "servlets" - helpers of the server;
     private static boolean isShutdown = false;
     private final ExecutorService threads;
-    private static Object data;
     private static final Logger logger = LogManager.getLogger();
     private static final Map<String, Object> resources = new HashMap<>();
+
+    /** Constructor RawSocketServer */
     public RawSocketServer(int numOfThreads) {
         threads = Executors.newFixedThreadPool(numOfThreads);
     }
@@ -37,6 +38,12 @@ public class RawSocketServer {
     public void addMapping(String path, String className) {
         handlers.put(path, className);
     }
+
+    /**
+     * Maps a given resourceName to the object of map
+     * @param resourceName String
+     * @param resource Object
+     */
     public void setResourceAttribute(String resourceName, Object resource) {
         resources.put(resourceName, resource);
     }
@@ -103,8 +110,7 @@ public class RawSocketServer {
                     response.sendPageNotFoundResponse();
                 }
             }catch(IOException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-                logger.debug("Error"+e);
-//                throw new RuntimeException(e);
+                logger.debug("Error" + e);
             }
         }
     }
