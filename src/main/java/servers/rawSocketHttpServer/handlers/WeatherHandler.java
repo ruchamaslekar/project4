@@ -8,6 +8,12 @@ import servers.rawSocketHttpServer.HttpResponse;
 
 public class WeatherHandler implements HttpHandler {
     private ThreadSafeHotelDetails threadSafeHotelDetails;
+
+    /**
+     * Method to get request and writes Json response that contains weather data
+     * @param request HttpRequest
+     * @param response HttpResponse
+     */
     @Override
     public void processRequest(HttpRequest request, HttpResponse response) {
         JsonObject responseJson = new JsonObject();

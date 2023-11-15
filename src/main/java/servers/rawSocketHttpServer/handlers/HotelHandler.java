@@ -1,7 +1,6 @@
 package servers.rawSocketHttpServer.handlers;
 
 import com.google.gson.JsonObject;
-import hotelData.Hotel;;
 import hotelData.ThreadSafeHotelDetails;
 import servers.rawSocketHttpServer.HttpHandler;
 import servers.rawSocketHttpServer.HttpRequest;
@@ -9,6 +8,12 @@ import servers.rawSocketHttpServer.HttpResponse;
 
 public class HotelHandler implements HttpHandler {
     private ThreadSafeHotelDetails threadSafeHotelDetails;
+
+    /**
+     * Method to get request and writes Json response that contains hotel data
+     * @param request HttpRequest
+     * @param response HttpResponse
+     */
     @Override
     public void processRequest(HttpRequest request, HttpResponse response) {
         JsonObject responseJson = new JsonObject();
