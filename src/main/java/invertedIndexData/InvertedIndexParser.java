@@ -20,6 +20,12 @@ import java.util.List;
 public class InvertedIndexParser {
     private final List<Review> reviewList = new ArrayList<>();
 
+    /**
+     * Method to parse directory that contains json files
+     * @param directory String
+     * @param index index InvertedIndex
+     * @param reviewDetails ReviewDetails
+     */
     public void ParseDirectory(String directory, InvertedIndex index, ReviewDetails reviewDetails) {
         Path p = Paths.get(directory);
         try (DirectoryStream<Path> pathsInDir = Files.newDirectoryStream(p)) {
@@ -35,6 +41,13 @@ public class InvertedIndexParser {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Method to parse JSON files
+     * @param filePath String
+     * @param invertedIndex InvertedIndex
+     * @param reviewDetails ReviewDetails
+     */
     public void parseReviewJsonForInverted(String filePath,InvertedIndex invertedIndex,ReviewDetails reviewDetails){
         /** Reading json files*/
         try (FileReader reader = new FileReader(filePath)) {

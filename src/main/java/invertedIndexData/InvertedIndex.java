@@ -10,7 +10,7 @@ import java.util.*;
 
 public class InvertedIndex {
 
-    /** Initializing invertedIndex Map */
+    /** Initializing invertedIndex map */
     private final Map<String, TreeSet<ReviewFrequency>> invertedIndex = new HashMap<>();
 
     /** Getter method for map*/
@@ -18,7 +18,9 @@ public class InvertedIndex {
         return Collections.unmodifiableMap(invertedIndex);
     }
 
-    /** Method to add Reviews into InvertedIndex */
+    /** Method to add Reviews into InvertedIndex
+     * @param  review Review
+     */
     public void addReviews(Review review) {
         String[] cleanedWords = review.getReviewText().split(" ");
         for (String word : cleanedWords) {
@@ -61,7 +63,8 @@ public class InvertedIndex {
     }
 
     /** This method is searching to get details from invertedIndex
-     * @param word word
+     * @param word String
+     * @param numOfReviews int
      * */
     public Set<ReviewFrequency> searchByWord (String word,int numOfReviews) {
         Set<ReviewFrequency> matchingReviews = invertedIndex.get(word);
@@ -77,6 +80,11 @@ public class InvertedIndex {
             return null;
         }
     }
+
+    /** Method to return invertedIndex in JsonObject format
+     * @param  word String
+     * @param  numOfReviews int
+     */
     public JsonObject getInvertedIndexInJSONFormat(String word,int numOfReviews) {
         JsonObject responseJson = new JsonObject();
         JsonArray array = new JsonArray();

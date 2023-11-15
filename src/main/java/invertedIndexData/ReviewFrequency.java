@@ -1,34 +1,44 @@
 package invertedIndexData;
 
 import reviewData.Review;
-
 import java.time.LocalDate;
 
 public class ReviewFrequency implements Comparable<ReviewFrequency> {
     private final Review review;
     private int frequency;
 
+    /** Constructor ReviewFrequency
+     * @param review review
+     * @param frequency frequency
+     */
     public ReviewFrequency(Review review, int frequency) {
         this.review = review;
         this.frequency = frequency;
     }
 
+    /** Getter for Review */
     public Review getReview() {
         return review;
     }
 
+    /** Getter for Frequency */
     public int getFrequency() {
         return frequency;
     }
 
+    /** Setter for Longitude */
     public void setFrequency(int frequency) {
         this.frequency = frequency;
     }
 
+    /** Getter for Date */
     public LocalDate getDate() {
         return review.getDate();
     }
 
+    /** toString
+     * @return string representation of this ReviewFrequency
+     */
     @Override
     public String toString() {
         return "HotelId = " + review.getHotelId() + System.lineSeparator() +
