@@ -1,6 +1,10 @@
 package invertedIndexData;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import hotelData.Hotel;
 import reviewData.Review;
+import weatherData.WeatherFetcher;
 
 import java.util.*;
 
@@ -72,6 +76,30 @@ public class InvertedIndex {
         } else {
             return null;
         }
+    }
+    public JsonObject getInvertedIndexInJSONFormat(String word,int numOfReviews) {
+        JsonObject responseJson = new JsonObject();
+        JsonArray array = new JsonArray();
+        Set<ReviewFrequency> reviews = this.searchByWord(word, numOfReviews);
+        if (reviews != null && !reviews.isEmpty()) {
+            ReviewFrequency[] setArray = reviews.toArray(new ReviewFrequency[0]);
+            responseJson.addProperty("word", word);
+            for(ReviewFrequency reviewFrequency : setArray) {
+                JsonObject reviewJson = new JsonObject();
+                reviewJson.addProperty("reviewId", reviewFrequency.getReview().getReviewId());
+                reviewJson.addProperty("title", reviewFrequency.getReview().getTitle());
+                reviewJson.addProperty("user", reviewFrequency.getReview().getUserNickname());
+                reviewJson.addProperty("reviewText", reviewFrequency.getReview().getReviewText());
+                reviewJson.addProperty("date", reviewFrequency.getReview().getDate().toString());
+                array.add(reviewJson);
+                responseJson.add("reviews", array);
+            }
+            responseJson.addProperty("success", true);
+        } else {
+            responseJson.addProperty("success", false);
+            responseJson.addProperty("word", "invalid");
+        }
+        return responseJson;
     }
 }
 
