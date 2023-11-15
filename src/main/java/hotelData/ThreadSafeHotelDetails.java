@@ -46,4 +46,26 @@ public class ThreadSafeHotelDetails extends HotelDetails {
     public Set<String> getIdForHotel() {
         return super.getIdForHotel();
     }
+
+    @Override
+    public JsonObject getHotelInJSONFormat(String hotelId) {
+        try{
+            lock.readLock().lock();
+            return super.getHotelInJSONFormat(hotelId);
+        }
+        finally {
+            lock.readLock().unlock();
+        }
+    }
+
+    @Override
+    public JsonObject getWeatherDataInJSONFormat(String hotelId) {
+        try{
+            lock.readLock().lock();
+            return super.getWeatherDataInJSONFormat(hotelId);
+        }
+        finally {
+            lock.readLock().unlock();
+        }
+    }
 }
