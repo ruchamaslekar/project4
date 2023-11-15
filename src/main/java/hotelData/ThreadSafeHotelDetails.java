@@ -1,22 +1,18 @@
 package hotelData;
 
 import com.google.gson.JsonObject;
-
-import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.locks.*;
 
-/**This class is extending HotelDetails class and implementing locks */
+/** This class is extending HotelDetails class and implementing locks */
 public class ThreadSafeHotelDetails extends HotelDetails {
     private final ReentrantReadWriteLock lock;
     public ThreadSafeHotelDetails() {
         lock = new ReentrantReadWriteLock();
 
     }
-    /**
-     * Overridden method from HotelDetails class
-     * Has ReadLock
-     */
+
+    /** Overridden getHotel() method from HotelDetails class */
     @Override
     public Hotel getHotel(String hotelID) {
         try{
@@ -27,9 +23,7 @@ public class ThreadSafeHotelDetails extends HotelDetails {
             lock.readLock().unlock();
         }
     }
-    /** Overridden method from HotelDetails class
-     * Has WriteLock
-     * */
+    /** Overridden addHotel() method from HotelDetails class */
     @Override
     public void addHotel(String hotelId, Hotel hotel) {
         try{
@@ -41,12 +35,12 @@ public class ThreadSafeHotelDetails extends HotelDetails {
         }
     }
 
-    /** This method is returning HotelIds of all hotels
-     */
+    /** Overridden getIdForHotel() method from HotelDetails class */
     public Set<String> getIdForHotel() {
         return super.getIdForHotel();
     }
 
+    /** Overridden getHotelInJSONFormat() method from HotelDetails class */
     @Override
     public JsonObject getHotelInJSONFormat(String hotelId) {
         try{
@@ -58,6 +52,7 @@ public class ThreadSafeHotelDetails extends HotelDetails {
         }
     }
 
+    /** Overridden getWeatherDataInJSONFormat() method from HotelDetails class */
     @Override
     public JsonObject getWeatherDataInJSONFormat(String hotelId) {
         try{

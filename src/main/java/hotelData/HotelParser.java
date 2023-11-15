@@ -7,10 +7,10 @@ import java.io.IOException;
 /** Demonstrating HotelParser class */
 public class HotelParser {
     /**
-     * This method is parsing hotel200.json file
+     * This method is parsing a json file
      * that contains info about hotels; using GSON library.
-     * @param filePath path to the json file
-     *  @param hotelMap hotelMap
+     * @param filePath String
+     *  @param hotelMap HotelDetails
      */
     public void parseHotelJson(String filePath , HotelDetails hotelMap) {
         /** Reading json file hotels1.json */

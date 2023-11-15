@@ -15,8 +15,8 @@ public class HotelDetails {
     private final Map<String, Hotel> hotelMap = new TreeMap<>();
 
     /** This method is adding data into hotelMap
-     * @param hotelId hotelId
-     * @param hotel hotel
+     * @param hotelId String
+     * @param hotel Hotel
      * */
     public void addHotel(String hotelId, Hotel hotel) {
         hotelMap.put(hotelId, hotel);
@@ -24,19 +24,20 @@ public class HotelDetails {
 
     /**
      * This method is printing Hotel data based on hotelID
-     *
-     * @param hotelID hotelID
+     * @param hotelID String
      */
     public Hotel getHotel(String hotelID) {
         return hotelMap.get(hotelID);
     }
 
-    /** This method is returning HotelIds of all hotels
-     */
+    /** This method is returning HotelIds of all hotels */
     public Set<String> getIdForHotel() {
         return Collections.unmodifiableSet(hotelMap.keySet());
     }
 
+    /** A method to return hotel in JsonObject format
+     * @param hotelId String
+     */
     public JsonObject getHotelInJSONFormat(String hotelId) {
         JsonObject responseJson = new JsonObject();
             Hotel hotel = this.getHotel(hotelId);
@@ -56,6 +57,10 @@ public class HotelDetails {
         return responseJson;
     }
 
+    /**
+     * Method to return weather in JsonObject format
+     * @param hotelId String
+     */
     public JsonObject getWeatherDataInJSONFormat(String hotelId) {
         JsonObject responseJson = new JsonObject();
         Hotel hotel = this.getHotel(hotelId);

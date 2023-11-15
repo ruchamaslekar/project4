@@ -26,33 +26,39 @@ public class Hotel {
         this.latitude = latitude;
         this.city = city;
         this.state = state;
-
     }
 
+    /** Getter for HotelName */
     public String getHotelName() {
         return hotelName;
     }
 
+    /** Getter for HotelId */
     public String getHotelId() {
         return hotelId;
     }
 
+    /** Getter for Latitude */
     public String getLatitude() {
         return latitude;
     }
 
+    /** Getter for City */
     public String getCity() {
         return city;
     }
 
+    /** Getter for State */
     public String getState() {
         return state;
     }
 
+    /** Getter for Address */
     public String getAddress() {
         return address;
     }
 
+    /** Getter for Longitude */
     public String getLongitude() {
         return longitude;
     }
@@ -68,6 +74,9 @@ public class Hotel {
                 this.city +", "+this.state;
     }
 
+    /** toStringDisplay
+     * @return string representation of this hotel in different format
+     */
     public String toStringDisplay() {
         return  "HotelName = " + this.hotelName + System.lineSeparator()+
                 "HotelId = " + this.hotelId + System.lineSeparator()+
