@@ -1,5 +1,8 @@
 package hotelData;
 
+import com.google.gson.JsonObject;
+import weatherData.WeatherFetcher;
+
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
@@ -32,5 +35,48 @@ public class HotelDetails {
      */
     public Set<String> getIdForHotel() {
         return Collections.unmodifiableSet(hotelMap.keySet());
+    }
+
+    public JsonObject getHotelInJSONFormat(String hotelId) {
+        JsonObject responseJson = new JsonObject();
+            Hotel hotel = this.getHotel(hotelId);
+            if (hotel != null) {
+                responseJson.addProperty("hotelId", hotelId);
+                responseJson.addProperty("name", hotel.getHotelName());
+                responseJson.addProperty("addr", hotel.getAddress());
+                responseJson.addProperty("city", hotel.getCity());
+                responseJson.addProperty("state", hotel.getState());
+                responseJson.addProperty("lat", hotel.getLatitude());
+                responseJson.addProperty("lng", hotel.getLongitude());
+                responseJson.addProperty("success", true);
+            } else {
+                responseJson.addProperty("hotelId", "invalid");
+                responseJson.addProperty("success", false);
+            }
+        return responseJson;
+    }
+
+    public JsonObject getWeatherDataInJSONFormat(String hotelId) {
+        JsonObject responseJson = new JsonObject();
+        Hotel hotel = this.getHotel(hotelId);
+        if(hotel != null) {
+            String latitude = hotel.getLatitude();
+            String longitude = hotel.getLongitude();
+            JsonObject weatherDetails = WeatherFetcher.fetch("api.open-meteo.com","/v1/forecast?latitude="+latitude+"&longitude="+longitude+"&current_weather=true");
+            System.out.println(weatherDetails.toString());
+            responseJson.addProperty("hotelId", hotelId);
+            responseJson.addProperty("name", hotel.getHotelName());
+            responseJson.addProperty("addr", hotel.getAddress());
+            responseJson.addProperty("city", hotel.getCity());
+            responseJson.addProperty("state", hotel.getState());
+            responseJson.addProperty("lat", hotel.getLatitude());
+            responseJson.addProperty("lng", hotel.getLongitude());
+            responseJson.add("weather", weatherDetails);
+            responseJson.addProperty("success", true);
+        } else {
+            responseJson.addProperty("hotelId", "invalid");
+            responseJson.addProperty("success", false);
+        }
+        return responseJson;
     }
 }
