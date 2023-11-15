@@ -2,8 +2,6 @@ package reviewData;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import hotelData.Hotel;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -15,8 +13,8 @@ public class ReviewDetails {
     private final Map<String, List<Review>> reviewMap  = new HashMap<>();
 
     /** This method is adding data into reviewMap
-     * @param hotelId hotelId
-     * @param  reviewList reviewList
+     * @param hotelId String
+     * @param  reviewList List<Review>
      * */
     public void addReviews(String hotelId, List<Review> reviewList){
         reviewList.sort((r1, r2) -> {
@@ -30,8 +28,9 @@ public class ReviewDetails {
     }
 
     /** This method is printing Review data based on hotelID
-     * @param hotelId hotelId
-     * */
+     * @param hotelId String
+     * @param numOfReviews int
+     */
     public List<Review> getReviews(String hotelId,int numOfReviews) {
         List<Review> reviews = reviewMap.get(hotelId);
         if (reviews != null) {
@@ -46,6 +45,10 @@ public class ReviewDetails {
         }
     }
 
+    /** Method to return Reviews in JsonObject format
+     * @param hotelId String
+     * @param numOfReviews int
+     */
     public JsonObject getReviewsInJSONFormat(String hotelId,int numOfReviews) {
         JsonObject responseJson = new JsonObject();
             List<Review> reviews = this.getReviews(hotelId, numOfReviews);

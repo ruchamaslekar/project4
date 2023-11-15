@@ -2,7 +2,6 @@ package reviewData;
 
 import com.google.gson.JsonObject;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -14,10 +13,7 @@ public class ThreadSafeReviewDetails extends ReviewDetails {
         this.lock = new ReentrantReadWriteLock();
     }
 
-    /**
-     * Overridden method from ReviewDetails class
-     * Has WriteLock
-     */
+    /** Overridden addReviews() method from ReviewDetails class */
     @Override
     public void addReviews(String hotelId, List<Review> review) {
         try {
@@ -28,10 +24,7 @@ public class ThreadSafeReviewDetails extends ReviewDetails {
         }
     }
 
-    /**
-     * Overridden method from ReviewDetails class
-     * Has ReadLock
-     */
+    /** Overridden getReviews() method from ReviewDetails class */
     @Override
     public List<Review> getReviews(String hotelId, int numOfReviews) {
         try {
@@ -42,6 +35,7 @@ public class ThreadSafeReviewDetails extends ReviewDetails {
         }
     }
 
+    /** Overridden getReviewsInJSONFormat() method from ReviewDetails class */
     @Override
     public JsonObject getReviewsInJSONFormat(String hotelId, int numOfReviews) {
         try {
@@ -51,6 +45,5 @@ public class ThreadSafeReviewDetails extends ReviewDetails {
             lock.readLock().unlock();
         }
     }
-
 }
 

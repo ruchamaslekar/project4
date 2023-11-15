@@ -12,10 +12,7 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
     public ThreadSafeInvertedIndex() {
     }
 
-    /**
-     * Overridden method from InvertedIndex class
-     * Has WriteLock
-     */
+    /** Overridden addReviews() method from InvertedIndex class*/
     @Override
     public void addReviews(Review review) {
         try {
@@ -26,10 +23,7 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
         }
     }
 
-    /**
-     * Overridden method from InvertedIndex class
-     * Has ReadLock
-     */
+    /** Overridden searchByWord() method from InvertedIndex class */
     @Override
     public Set<ReviewFrequency> searchByWord(String word,int numOfThreads) {
         try {
@@ -40,6 +34,7 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
         }
     }
 
+    /** Overridden getInvertedIndexInJSONFormat() method from InvertedIndex class*/
     @Override
     public JsonObject getInvertedIndexInJSONFormat(String word, int numOfThreads) {
         try {
