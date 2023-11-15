@@ -53,9 +53,11 @@ public class RawSocketServerDriver {
         rawSocketServer.addMapping("hotelInfo", "HotelHandler");
         rawSocketServer.addMapping("reviews", "ReviewHandler");
         rawSocketServer.addMapping("index", "WordHandler");
+        rawSocketServer.addMapping("weather", "WeatherHandler");
         rawSocketServer.setResourceAttribute("HotelHandler",hotelDetails);
         rawSocketServer.setResourceAttribute("ReviewHandler",reviewDetails);
         rawSocketServer.setResourceAttribute("WordHandler",invertedIndex);
+        rawSocketServer.setResourceAttribute("WeatherHandler",hotelDetails);
         rawSocketServer.start();
 
     }
