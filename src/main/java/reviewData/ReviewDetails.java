@@ -1,5 +1,9 @@
 package reviewData;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import hotelData.Hotel;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -40,5 +44,34 @@ public class ReviewDetails {
         else {
             return Collections.emptyList();
         }
+    }
+
+    public JsonObject getReviewsInJSONFormat(String hotelId,int numOfReviews) {
+        JsonObject responseJson = new JsonObject();
+            List<Review> reviews = this.getReviews(hotelId, numOfReviews);
+            if (reviews.isEmpty()) {
+                responseJson.addProperty("hotelId", "invalid");
+                responseJson.addProperty("success", false);
+            } else {
+                JsonArray array = new JsonArray();
+                responseJson.addProperty("hotelId", hotelId);
+                for (Review review : reviews) {
+                    if (review != null) {
+                        JsonObject reviewJson = new JsonObject();
+                        reviewJson.addProperty("user", review.getUserNickname());
+                        reviewJson.addProperty("title", review.getTitle());
+                        reviewJson.addProperty("reviewId", review.getReviewId());
+                        reviewJson.addProperty("reviewText", review.getReviewText());
+                        array.add(reviewJson);
+                        responseJson.add("reviews", array);
+                        responseJson.addProperty("success", true);
+                    } else {
+                        responseJson.addProperty("success", false);
+                        responseJson.addProperty("hotelId", "invalid");
+                    }
+                }
+            }
+
+        return responseJson;
     }
 }
