@@ -11,6 +11,11 @@ import java.io.PrintWriter;
 
 public class HotelServlet extends HttpServlet {
 
+    /**
+     * Method to get request and writes Json response that contains hotel data
+     * @param request HttpServletRequest
+     * @param response HttpServletResponse
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         try{

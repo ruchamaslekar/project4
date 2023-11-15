@@ -10,6 +10,11 @@ import java.io.PrintWriter;
 
 public class ReviewServlet extends HttpServlet {
 
+    /**
+     * Method to get request and writes Json response that contains reviews data
+     * @param request HttpServletRequest
+     * @param response HttpServletResponse
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         try {

@@ -1,19 +1,21 @@
 package servers.jettyServer;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import invertedIndexData.InvertedIndex;
-import invertedIndexData.ReviewFrequency;
 import org.apache.commons.text.StringEscapeUtils;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Set;
 
 public class InvertedIndexServlet extends HttpServlet {
 
+    /**
+     * Method to get request and writes Json response that contains invertedIndex data
+     * @param request HttpServletRequest
+     * @param response HttpServletResponse
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");

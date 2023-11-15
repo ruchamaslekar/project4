@@ -1,16 +1,20 @@
 package servers.jettyServer;
 
 import com.google.gson.JsonObject;
-import hotelData.Hotel;
 import hotelData.HotelDetails;
 import org.apache.commons.text.StringEscapeUtils;
-import weatherData.WeatherFetcher;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 
 public class WeatherServlet extends HttpServlet {
+
+    /**
+     * Method to get request and writes Json response that contains weather data
+     * @param request HttpServletRequest
+     * @param response HttpServletResponse
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response){
         try {
