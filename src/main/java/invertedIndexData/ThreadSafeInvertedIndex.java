@@ -1,5 +1,6 @@
 package invertedIndexData;
 
+import com.google.gson.JsonObject;
 import reviewData.Review;
 import java.util.Set;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -34,6 +35,16 @@ public class ThreadSafeInvertedIndex extends InvertedIndex {
         try {
             lock.readLock().lock();
             return super.searchByWord(word,numOfThreads);
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
+
+    @Override
+    public JsonObject getInvertedIndexInJSONFormat(String word, int numOfThreads) {
+        try {
+            lock.readLock().lock();
+            return super.getInvertedIndexInJSONFormat(word,numOfThreads);
         } finally {
             lock.readLock().unlock();
         }
