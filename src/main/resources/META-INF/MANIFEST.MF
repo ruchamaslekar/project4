@@ -1,4 +1,4 @@
 Manifest-Version: 1.0
-Main-Class: servers.RawSocketServerDriver
+Main-Class: servers.JettyServerDriver
 Multi-Release: true
 
